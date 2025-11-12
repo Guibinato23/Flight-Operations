@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Schedule Planning</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg); }
+    .login-container { background: #fff; border-radius: 12px; box-shadow: 0 8px 32px rgba(30,32,90,0.10); padding: 36px 32px; width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 18px; }
+    .login-container h2 { margin: 0 0 10px 0; font-size: 1.5rem; color: var(--text); text-align: center; }
+    .login-container label { color: var(--muted); font-size: 14px; margin-bottom: 4px; }
+    .login-container input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--line); font-size: 15px; margin-bottom: 12px; }
+    .login-container button { width: 100%; padding: 10px; border-radius: 6px; border: none; background: var(--accent); color: #fff; font-weight: 600; font-size: 16px; cursor: pointer; margin-bottom: 8px; }
+    .login-container .switch { background: none; color: var(--accent); border: none; cursor: pointer; font-size: 14px; text-align: center; margin-top: 0; }
+    .login-container .error { color: #b91c1c; font-size: 13px; text-align: center; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <div class="login-container" id="loginBox">
+  <img src="Logo.png" alt="Logo" style="height:80px;width:auto;max-width:220px;object-fit:contain;display:block;margin:0 auto 10px auto;" id="brandLogoLogin" />
+
+    <form id="loginForm">
+      <label for="loginEmail">E-mail</label>
+      <input id="loginEmail" type="email" required autocomplete="username" />
+      <label for="loginPassword">Senha</label>
+      <input id="loginPassword" type="password" required autocomplete="current-password" />
+      <div class="error" id="loginError" style="display:none"></div>
+  <button type="submit" style="width:140px;display:block;margin:0 auto 8px auto;padding:9px 0;font-size:15px;">Entrar</button>
+    </form>
+    <button class="switch" id="showRegister">Não tem conta? Cadastre-se</button>
+  </div>
+  <div class="login-container" id="registerBox" style="display:none">
+    <h2 id="registerTitle">Cadastro</h2>
+    <form id="registerForm">
+      <label for="registerName">Nome</label>
+      <input id="registerName" type="text" required />
+      <label for="registerEmail">E-mail</label>
+      <input id="registerEmail" type="email" required autocomplete="username" />
+      <label for="registerPassword">Senha</label>
+      <input id="registerPassword" type="password" required autocomplete="new-password" />
+      <div class="error" id="registerError" style="display:none"></div>
+      <button type="submit">Cadastrar</button>
+    </form>
+    <button class="switch" id="showLogin">Já tem conta? Entrar</button>
+  </div>
+  <div id="adminApprovalBox" class="login-container" style="display:none;max-width:420px">
+    <h2>Aprovação de usuários</h2>
+    <div id="pendingList"></div>
+    <button id="refreshPending" style="margin-top:10px">Atualizar lista</button>
+  </div>
+  <script src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Schedule Planning</title>
+<link rel="stylesheet" href="style.css">
+<!-- Leaflet (map) para Flight Brief -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""
+/>
+<link rel="stylesheet" href="styleFB.css" />
+</head>
+<body>
+  <div id="sidebar">
+    <div class="sidebar-icon" id="sidebarCadastro" title="Cadastro">
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4" stroke="#2563eb" stroke-width="2"/><path d="M8 12h8M12 8v8" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    <div class="sidebar-icon" id="sidebarPainel" title="Painel">
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><rect x="3" y="11" width="7" height="9" rx="2" stroke="#2563eb" stroke-width="2"/><rect x="14" y="4" width="7" height="16" rx="2" stroke="#2563eb" stroke-width="2"/></svg>
+    </div>
+    <div class="sidebar-icon" id="sidebarBrief" title="Site Flight Brief">
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4" stroke="#22c55e" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h8" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    <div class="sidebar-icon" id="sidebarPax" title="Passageiros">
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="#f59e42" stroke-width="2"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="#f59e42" stroke-width="2"/></svg>
+    </div>
+  </div>
+  <div class="wrap" style="margin-left:64px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+      <div style="display:flex;align-items:center;gap:16px;">
+  <img src="Logo.png" alt="Logo" style="height:54px;width:auto;max-width:180px;object-fit:contain;" id="brandLogo" />
+  <h1 style="margin:0;font-size:1.05rem;letter-spacing:.01em;font-weight:600;color:#232336;">Poit Aviation Services</h1>
+      </div>
+      <div id="userProfile" style="display:flex;align-items:center;gap:10px;">
+        <span id="userName" style="font-size:15px;font-weight:500;color:#232336;">Usuário</span>
+  <div id="avatar" style="width:30px;height:30px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-weight:700;color:#2563eb;font-size:15px;box-shadow:0 2px 8px rgba(30,32,90,0.06);cursor:pointer;margin-right:12px;">U</div>
+      </div>
+
+      <!-- DROPDOWN PERFIL USUÁRIO -->
+      <div id="profileDropdown" style="display:none;position:absolute;top:56px;right:32px;min-width:200px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 32px rgba(30,32,90,0.10);z-index:100;padding:0;">
+  <button id="editProfileBtn" style="width:100%;background:none;border:none;padding:14px 18px;text-align:left;font-size:15px;color:#232336;cursor:pointer;">Editar perfil</button>
+  <button id="approvalBtn" style="display:none;width:100%;background:none;border:none;padding:14px 18px;text-align:left;font-size:15px;color:#16a34a;cursor:pointer;">Aprovação</button>
+  <button id="logoutBtn" style="width:100%;background:none;border:none;padding:14px 18px;text-align:left;font-size:15px;color:#b91c1c;cursor:pointer;">Sair</button>
+      </div>
+      <!-- MODAL DE EDIÇÃO DE PERFIL -->
+      <dialog id="profileEditDialog">
+        <form id="profileForm" method="dialog" style="min-width:280px">
+          <p class="modalTitle">Editar perfil</p>
+          <div class="modalRow">
+            <div>
+              <label for="profileName">Nome</label>
+              <input id="profileName" required />
+            </div>
+            <div>
+              <label for="profileEmail">E-mail</label>
+              <input id="profileEmail" type="email" required />
+            </div>
+          </div>
+          <div class="modalActions">
+            <button type="button" class="btnGhost" id="closeProfileEdit">Cancelar</button>
+            <button type="submit">Salvar</button>
+          </div>
+        </form>
+      </dialog>
+    </div>
+    <div class="tabs">
+      <div class="tab active" data-tab="cadastro">Cadastro</div>
+      <div class="tab" data-tab="painel">Painel</div>
+      <div class="tab" data-tab="flightbrief">Flight Brief</div>
+      <div class="tab" data-tab="pax">Passageiros</div>
+    </div>
+    <!-- PASSAGEIROS (nova aba) -->
+    <section id="pax" class="card" style="display:none">
+      <h2 style="margin-top:0;display:flex;align-items:center;gap:8px;font-size:1.2rem;color:#f59e42;font-weight:600;">
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="#f59e42" stroke-width="2"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="#f59e42" stroke-width="2"/></svg>
+        Passageiros
+      </h2>
+      <div id="paxContent" style="margin-top:18px;font-size:15px;color:#444;">
+        <!-- Conteúdo de passageiros será implementado aqui -->
+        Em breve: gerenciamento de passageiros.
+      </div>
+    </section>
+
+    <!-- CADASTRO -->
+    <section id="cadastro" class="card">
+      <form id="flightForm">
+        <div class="row" style="grid-template-columns: repeat(3, 1fr); gap:14px; border:none">
+          <div>
+            <label>Prefixo da aeronave</label>
+            <input id="prefix" required placeholder="Ex: PR-ABC" />
+          </div>
+          <div>
+            <label>Data do voo</label>
+            <input id="date" type="date" required />
+          </div>
+          <div>
+            <label>Horário de decolagem</label>
+            <input id="dept" type="time" required step="900" />
+          </div>
+        </div>
+        <div class="row" style="grid-template-columns: repeat(4, 1fr); gap:14px; border:none">
+          <div>
+            <label>Origem</label>
+            <input id="orig" required placeholder="Ex: GRU" maxlength="4" />
+          </div>
+          <div>
+            <label>Destino</label>
+            <input id="dest" required placeholder="Ex: MIA" maxlength="4" />
+          </div>
+          <div>
+            <label>Passageiros</label>
+            <input id="pax" type="number" min="0" value="0" />
+          </div>
+          <div>
+            <label for="dur" style="position:relative;display:inline-block;">
+              Flight time (min)
+              <span id="flightTimeInfoBtn" style="cursor:pointer;display:inline-block;vertical-align:middle;position:relative;" tabindex="0">
+                <svg width="16" height="16" style="vertical-align:middle;opacity:0.7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" stroke="#2563eb" stroke-width="2" fill="#fff"/>
+                  <path stroke="#2563eb" stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01" />
+                </svg>
+                <div id="flightTimeInfoList" style="display:none;position:absolute;left:50%;top:120%;transform:translateX(-50%);z-index:1000;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 4px 16px rgba(30,32,90,0.10);padding:12px 18px;font-size:14px;color:#232336;min-width:140px;">
+                  <div>1 hora - 60 min</div>
+                  <div>2 horas - 120 min</div>
+                  <div>3 horas - 180 min</div>
+                  <div>4 horas - 240 min</div>
+                  <div>5 horas - 300 min</div>
+                  <div>6 horas - 360 min</div>
+                  <div>7 horas - 420 min</div>
+                  <div>8 horas - 480 min</div>
+                  <div>9 horas - 540 min</div>
+                  <div>10 horas - 600 min</div>
+                  <div>11 horas - 660 min</div>
+                  <div>12 horas - 720 min</div>
+                </div>
+              </span>
+            </label>
+            <input id="dur" type="number" min="15" step="15" placeholder="90" />
+          </div>
+        </div>
+        <div class="row" style="grid-template-columns: 1fr; gap:14px; border:none">
+          <div>
+            <label>Observações</label>
+            <textarea id="notes" rows="2" placeholder="Observações do voo (opcional)"></textarea>
+          </div>
+        </div>
+        <div class="toolbar" style="margin-top:10px">
+          <button type="submit">Adicionar voo</button>
+          <button type="button" class="secondary" id="gotoBoard">Ir para o painel</button>
+        </div>
+      </form>
+
+      <hr style="border-color:#1f2937;margin:16px 0" />
+
+      <div>
+        <h3>Prefixos</h3>
+        <div class="toolbar">
+          <div class="prefixBox">
+            <input id="newPrefix" placeholder="Adicionar prefixo" />
+            <button type="button" id="addPrefix" class="secondary">Adicionar</button>
+          </div>
+          <div id="prefixList" class="legend"></div>
+        </div>
+      </div>
+
+      <h3 style="margin:18px 0 12px 0;font-size:1.1rem;color:#232336;font-weight:600;">Flight List</h3>
+      <div id="flightList" style="margin-bottom:18px;"></div>
+    </section>
+
+  <!-- PAINEL -->
+    <section id="painel" class="card" style="display:none">
+      <div class="toolbar" style="justify-content:space-between;margin-bottom:8px;flex-wrap:wrap">
+        <div class="weekNav">
+          <button id="prevWeek" class="secondary" type="button">⚊ Semana anterior</button>
+          <button id="todayBtn" class="secondary" type="button">Hoje</button>
+          <button id="nextWeek" class="secondary" type="button">Próxima semana ⚋</button>
+          <span id="weekRange" class="range"></span>
+        </div>
+        <div class="toolbar" style="gap:8px">
+          <label style="margin:0">Semana de:</label>
+          <input id="boardDate" type="date" />
+          <!-- Zoom VISUAL de linhas -->
+          <div class="toolbar seg" style="gap:6px">
+            <label style="margin:0">Tamanho:</label>
+            <button class="secondary" id="szCompact" type="button" title="Linhas mais baixas">Compacto</button>
+            <button class="secondary" id="szNormal"  type="button" title="Altura padrão">Normal</button>
+            <button class="secondary" id="szLarge"   type="button" title="Linhas mais altas">Grande</button>
+          </div>
+          <button id="clearBtn" class="secondary" type="button" title="Remover todos os voos da semana visualizada">Limpar semana</button>
+          <button id="backCadastro" type="button" class="secondary">Voltar ao cadastro</button>
+        </div>
+      </div>
+
+      <div class="toolbar" style="gap:8px;flex-wrap:wrap">
+        <input id="fPrefix" placeholder="Filtrar prefixo" />
+        <input id="fOrig"   placeholder="Origem" maxlength="4" />
+        <input id="fDest"   placeholder="Destino" maxlength="4" />
+        <button class="secondary" id="clearFilters" type="button">Limpar filtros</button>
+      </div>
+
+      <div class="weekAxis">
+        <div></div>
+        <div>
+          <div id="weekHeader" class="weekDayHeader"></div>
+          <div class="subLegend">Passe o mouse em um voo para ver rota/decolagem. Clique para editar. Use "Tamanho" para ajustar a altura das linhas.</div>
+        </div>
+      </div>
+
+      <div id="board"></div>
+
+      <div id="legend" class="legend"></div>
+      <div id="emptyMsg" class="empty" style="display:none">Sem voos para esta semana. Clique em "Cadastro" para adicionar.</div>
+      
+      <!-- Botão flutuante de exportar CSV -->
+      <button id="exportCSV" type="button" class="floating-download-btn" title="Exportar para CSV">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <span>Exportar CSV</span>
+      </button>
+    </section>
+
+    <!-- FLIGHT BRIEF (nova aba) -->
+    <section id="flightbrief" class="card" style="display:none;padding:0;margin-top:24px;">
+      <div class="flightbrief">
+        <div class="app" style="min-height:0;">
+          <aside>
+            <h1 style="font-size:18px;margin:0 0 12px">Configurar Flight Briefing</h1>
+            <fieldset>
+              <legend><strong>Marca</strong></legend>
+              <label>Slogan
+                <input id="slogan" placeholder="DEMAND THE SERVICE YOU DESERVE" />
+              </label>
+              <label>Nome da Empresa
+                <input id="company" placeholder="Poit Aviation" />
+              </label>
+            </fieldset>
+            <fieldset>
+              <legend><strong>Dados do Voo</strong></legend>
+              <div class="row">
+                <div>
+                  <label>Data</label>
+                  <input id="date" type="date" />
+                </div>
+                <div>
+                  <label>Horário (LT) Partida</label>
+                  <input id="departLT" type="time" />
+                </div>
+              </div>
+              <div class="row">
+                <div>
+                  <label>De (ICAO)</label>
+                  <input id="fromIcao" placeholder="ICAO" />
+                </div>
+                <div>
+                  <label>Para (ICAO)</label>
+                  <input id="toIcao" placeholder="ICAO" />
+                </div>
+              </div>
+              <label>Origem – Nome completo do aeroporto / cidade</label>
+              <input id="fromName" placeholder="From" />
+              <label>Destino – Nome completo do aeroporto / cidade</label>
+              <input id="toName" placeholder="To" />
+              <div class="row">
+                <div>
+                  <label>PAX</label>
+                  <input id="pax" type="number" min="0" placeholder="0" />
+                </div>
+                <div>
+                  <label>Tempo de Voo (hh:mm)</label>
+                  <input id="flightTime" placeholder="00:00" />
+                </div>
+              </div>
+              <div class="row">
+                <div>
+                  <label>Chegada (LT)</label>
+                  <input id="arriveLT" type="time" />
+                </div>
+                <div>
+                  <label>Nº do Voo</label>
+                  <input id="flightNo" placeholder="N/A" />
+                </div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend><strong>Previsão do tempo (Destino)</strong></legend>
+              <label>Cidade/Local do destino (edite se necessário)
+                <input id="wxCity" placeholder="" />
+              </label>
+              <div class="row">
+                <div>
+                  <label>Latitude (opcional)
+                    <input id="wxLat" placeholder="" />
+                  </label>
+                </div>
+                <div>
+                  <label>Longitude (opcional)
+                    <input id="wxLon" placeholder="" />
+                  </label>
+                </div>
+              </div>
+              <button type="button" class="btn" id="wxUpdate">Atualizar previsão</button>
+              <div id="wxStatus" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
+            </fieldset>
+            <fieldset>
+              <legend><strong>Aeronave</strong></legend>
+              <label>Tipo</label>
+              <input id="acType" placeholder="" />
+              <label>Matrícula</label>
+              <input id="acReg" placeholder="" />
+              <label>Restrições / Observações</label>
+              <textarea id="acRest" placeholder=""></textarea>
+              <div class="row">
+                <div>
+                  <label>Foto 1
+                    <input type="file" class="picInput" accept="image/*" data-pic="1" />
+                  </label>
+                </div>
+                <div>
+                  <label>Foto 2
+                    <input type="file" class="picInput" accept="image/*" data-pic="2" />
+                  </label>
+                </div>
+              </div>
+              <label>Foto 3
+                <input type="file" class="picInput" accept="image/*" data-pic="3" />
+              </label>
+            </fieldset>
+            <fieldset>
+              <legend><strong>Tripulação & Operador</strong></legend>
+              <div id="crewWrap"></div>
+              <button type="button" class="btn" id="addCrew">+ Adicionar contato</button>
+            </fieldset>
+            <fieldset>
+              <legend><strong>Passageiros</strong></legend>
+              <div id="paxWrap"></div>
+              <button type="button" class="btn" id="addPax">+ Adicionar passageiro</button>
+            </fieldset>
+            <fieldset>
+              <legend><strong>Handling Contacts</strong></legend>
+              <div id="handWrap"></div>
+              <button type="button" class="btn" id="addHand">+ Adicionar aeroporto</button>
+            </fieldset>
+            <fieldset>
+              <legend><strong>Observações</strong></legend>
+              <textarea id="generalNotes" placeholder="Adicione observações gerais aqui..."></textarea>
+            </fieldset>
+            <div class="controls">
+              <button class="btn" id="resetBtn">Limpar</button>
+              <button class="btn primary" id="printBtn">Baixar PDF</button>
+            </div>
+          </aside>
+          <main style="padding:18px;overflow:auto">
+            <div class="page" id="page">
+              <div class="pb">
+                <div class="topbar">
+                  <div class="brandbox">
+                    <img id="logo" alt="Logo" src="Logo.png" />
+                    <div class="slogan" id="sloganOut">DEMAND THE SERVICE YOU DESERVE</div>
+                  </div>
+                  <div>
+                    <div style="text-align:right;color:var(--muted);font-size:12px" id="companyOut">{{company}}</div>
+                    <div class="title">FLIGHT BRIEFING</div>
+                  </div>
+                </div>
+                <table class="grid">
+                  <thead>
+                    <tr>
+                      <th style="width:110px">Date</th>
+                      <th style="width:80px">Departing</th>
+                      <th>From</th>
+                      <th>To</th>
+                      <th style="width:50px">PAX</th>
+                      <th style="width:90px">Flight Time</th>
+                      <th style="width:90px">Arriving</th>
+                      <th style="width:90px">Flight No.</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td id="outDate"></td>
+                      <td id="outDepart"></td>
+                      <td><div id="outFromIcao" style="font-weight:600"></div><div id="outFromName" style="font-size:11px;color:var(--muted)"></div></td>
+                      <td><div id="outToIcao" style="font-weight:600"></div><div id="outToName" style="font-size:11px;color:var(--muted)"></div></td>
+                      <td id="outPax"></td>
+                      <td id="outFtime"></td>
+                      <td id="outArrive"></td>
+                      <td id="outFno"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="section" id="routeSection">
+                  <h3>Route Map</h3>
+                  <div id="routeMap"></div>
+                  <div class="route-hint" id="routeHint">Preencha os campos “De (ICAO)” e “Para (ICAO)” para visualizar a rota.</div>
+                </div>
+                <div class="section">
+                  <h3>Destination Weather</h3>
+                  <table class="grid" id="wxTable">
+                    <tbody>
+                      <tr><th style="width:140px">Location</th><td id="outWxLoc">—</td></tr>
+                      <tr><th>Date</th><td id="outWxDate">—</td></tr>
+                      <tr><th>Forecast (daily)</th><td id="outWxSummary">—</td></tr>
+                      <tr><th>Arrival window</th><td id="outWxArrival">—</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="section">
+                  <h3>Aircraft</h3>
+                  <table class="grid">
+                    <tbody>
+                      <tr><th style="width:140px">Type</th><td id="outType"></td></tr>
+                      <tr><th>Registration</th><td id="outReg"></td></tr>
+                      <tr><th>Restrictions</th><td id="outRest"></td></tr>
+                    </tbody>
+                  </table>
+                  <div class="aircraft-pics">
+                    <img id="pic1" alt="" />
+                    <img id="pic2" alt="" />
+                    <img id="pic3" alt="" />
+                  </div>
+                </div>
+                <div class="section">
+                  <h3>Crew & Operator Contacts</h3>
+                  <table class="grid contact-table" id="crewTable">
+                    <thead>
+                      <tr><th style="width:160px">Role</th><th style="width:240px">Name</th><th>Phone</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="section" id="notesSection">
+                  <h3>General Informations</h3>
+                  <div id="outGeneralNotes" style="white-space:pre-wrap;min-height:40px;color:#444;font-size:13px;background:#f7f7f8;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;">—</div>
+                </div>
+                <div class="section">
+                  <h3>Passengers</h3>
+                  <table class="grid" id="paxTable">
+                    <thead>
+                      <tr><th style="width:240px">Name</th><th style="width:180px">Passport</th><th style="width:140px">Expiration</th><th>Phone</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="section">
+                  <h3>Handling contacts</h3>
+                  <table class="grid handling-table" id="handTable">
+                    <thead>
+                      <tr><th style="width:220px">AIRPORT</th><th>HANDLING</th><th style="width:260px">ADDRESS</th><th>PHONE</th><th>EMAIL</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL -->
+  <dialog id="editDialog">
+    <form id="editForm" method="dialog">
+      <input type="hidden" id="editId" />
+      <p class="modalTitle">Editar voo</p>
+      <div class="modalRow">
+        <div>
+          <label>Origem</label>
+          <input id="editOrig" maxlength="4" required />
+        </div>
+        <div>
+          <label>Destino</label>
+          <input id="editDest" maxlength="4" required />
+        </div>
+      </div>
+      <div class="modalRow" style="margin-top:8px">
+        <div>
+          <label>Data</label>
+          <input id="editDate" type="date" required />
+        </div>
+        <div>
+          <label>Decolagem</label>
+          <input id="editDept" type="time" step="900" required />
+        </div>
+      </div>
+      <div class="modalRow" style="margin-top:8px">
+        <div>
+          <label>Duração (min)</label>
+          <input id="editDur" type="number" min="15" step="15" />
+        </div>
+        <div>
+          <label>Passageiros</label>
+          <input id="editPax" type="number" min="0" />
+        </div>
+      </div>
+      <div class="modalRow" style="margin-top:8px">
+        <div class="full">
+          <label>Observações</label>
+          <textarea id="editNotes" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="modalActions">
+        
+        <button type="button" class="btnDanger" id="deleteFlight">Excluir</button>
+        <button type="button" class="btnGhost" id="closeEdit">Cancelar</button>
+        <button type="submit">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- MODAL DE APROVAÇÃO DE USUÁRIOS -->
+  <dialog id="adminApprovalDialog" style="padding:0;max-width:420px;border:none;border-radius:12px;">
+    <div class="login-container" style="box-shadow:none;padding:28px 24px 18px 24px;margin:0;max-width:420px">
+      <h2 style="margin-top:0">Aprovação de usuários</h2>
+      <div id="pendingList"></div>
+      <button id="refreshPending" style="margin-top:10px">Atualizar lista</button>
+      <button id="closeApproval" class="btnGhost" style="margin-top:10px">Fechar</button>
+    </div>
+  </dialog>
+
+  <!-- Toast para notificações -->
+  <div id="toast">
+    <span class="toast-icon">✓</span>
+    <span id="toastMsg">Mensagem</span>
+  </div>
+
+<script src="login.js"></script>
+<script src="script.js"></script>
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""
+></script>
+<script src="scriptFB.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Sidebar navegação
+  var cadastro = document.getElementById('sidebarCadastro');
+  var painel = document.getElementById('sidebarPainel');
+  var brief = document.getElementById('sidebarBrief');
+  if (cadastro) {
+    cadastro.onclick = function() {
+      if (typeof switchTab === 'function') switchTab('cadastro');
+      document.querySelectorAll('.sidebar-icon').forEach(i=>i.classList.remove('active'));
+      cadastro.classList.add('active');
+    };
+  }
+  if (painel) {
+    painel.onclick = function() {
+      if (typeof switchTab === 'function') switchTab('painel');
+      document.querySelectorAll('.sidebar-icon').forEach(i=>i.classList.remove('active'));
+      painel.classList.add('active');
+    };
+  }
+  if (brief) {
+    brief.onclick = function() {
+      if (typeof switchTab === 'function') switchTab('flightbrief');
+      document.querySelectorAll('.sidebar-icon').forEach(i=>i.classList.remove('active'));
+      brief.classList.add('active');
+    };
+  }
+
+  // Tooltip Flight Time - agora abre ao passar o mouse
+  var infoBtn = document.getElementById('flightTimeInfoBtn');
+  var infoList = document.getElementById('flightTimeInfoList');
+  if(infoBtn && infoList) {
+    infoBtn.addEventListener('mouseenter', function(e) {
+      infoList.style.display = 'block';
+    });
+    infoBtn.addEventListener('mouseleave', function(e) {
+      infoList.style.display = 'none';
+    });
+    infoList.addEventListener('mouseenter', function(e) {
+      infoList.style.display = 'block';
+    });
+    infoList.addEventListener('mouseleave', function(e) {
+      infoList.style.display = 'none';
+    });
+    document.addEventListener('click', function(e) {
+      if(!infoBtn.contains(e.target) && !infoList.contains(e.target)) {
+        infoList.style.display = 'none';
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>
+</script>
+</body>
+</html>

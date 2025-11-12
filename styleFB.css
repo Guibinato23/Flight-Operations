@@ -1,0 +1,88 @@
+/* Estilos do Flight Brief escopados para a seção .flightbrief
+     Mantém o visual original sem afetar o restante do app */
+
+.flightbrief{
+    --brand:#e24b4b;
+    --ink:#111827;
+    --muted:#6b7280;
+    --line:#e5e7eb;
+    --bg:#f7f7f8;
+}
+.flightbrief *{box-sizing:border-box}
+.flightbrief .app{display:grid;grid-template-columns:380px 1fr;gap:16px;min-height:calc(100vh - 120px)}
+.flightbrief aside{background:#fff;border-right:1px solid var(--line);padding:18px 16px 120px;overflow:auto}
+.flightbrief main{padding:18px;overflow:auto}
+.flightbrief h1{font-size:18px;margin:0 0 12px}
+.flightbrief fieldset{border:1px solid var(--line);border-radius:10px;margin:10px 0;padding:10px}
+.flightbrief legend{padding:0 6px;font-weight:700}
+.flightbrief h2{font-size:13px;margin:18px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.flightbrief label{font-size:12px;color:var(--muted);display:block;margin:10px 0 6px}
+.flightbrief input,.flightbrief textarea,.flightbrief select{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:13px;background:#fff;color:var(--ink)}
+.flightbrief textarea{min-height:72px;resize:vertical}
+.flightbrief .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.flightbrief .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;font-size:13px;cursor:pointer}
+.flightbrief .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+.flightbrief .controls{position:sticky;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(247,247,248,0),#fff 30%);padding:12px 0 14px;display:flex;gap:8px}
+
+/* Printable page */
+.flightbrief .page{width:794px;min-height:1123px;background:#fff;margin:0 auto;border:1px solid var(--line);box-shadow:0 6px 24px rgba(0,0,0,.05)}
+.flightbrief .pb{padding:28px 28px 36px}
+.flightbrief .topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.flightbrief .brandbox{display:flex;flex-direction:column;gap:6px}
+.flightbrief .brandbox img{max-height:100px;object-fit:contain}
+.flightbrief .slogan{font-size:10px;color:var(--muted);letter-spacing:.06em}
+.flightbrief .title{font-weight:800;color:#14143B;font-size:18px;margin-top:12px}
+.flightbrief .grid{width:100%;border-collapse:collapse;font-size:12px}
+.flightbrief .grid th,.flightbrief .grid td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.flightbrief .grid th{color:var(--muted);font-weight:600}
+.flightbrief .section{margin-top:18px}
+.flightbrief .section h3{font-size:13px;margin:0 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.flightbrief .aircraft-pics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.flightbrief .aircraft-pics img{width:100%;height:120px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.flightbrief .contact-table td:nth-child(3), .flightbrief .contact-table td:nth-child(2){color:var(--brand)}
+.flightbrief .handling-table td:nth-child(4){white-space:nowrap}
+
+/* Route map */
+.flightbrief #routeMap{width:100%;height:260px;border:1px solid var(--line);border-radius:10px}
+.flightbrief .route-hint{font-size:11px;color:var(--muted);margin-top:4px}
+
+@media print{
+    /* Full-bleed A4 page with centered brief */
+    @page { size: A4; margin: 0; }
+    html, body { width: 210mm; height: 297mm; background:#fff !important; }
+    /* Reset external layout offsets */
+    .wrap{ margin:0 !important; padding:0 !important; }
+    .wrap[style]{ margin-left:0 !important; }
+    .flightbrief{ margin:0 !important; }
+    /* Hide everything outside the brief */
+    body *{ visibility:hidden !important }
+    .flightbrief, .flightbrief *{ visibility:visible !important }
+    /* Only render the brief page */
+    .flightbrief .app{ display:block !important }
+    .flightbrief aside{ display:none !important }
+    .flightbrief main{ padding:0 !important; margin:0 !important }
+    .flightbrief .page{
+        width:210mm !important;
+        min-height:297mm !important;
+        margin:0 auto !important;
+        border:none !important;
+        box-shadow:none !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    /* Tighten header to move content up */
+                    /* Padding ainda mais justo para preencher o topo */
+                    .flightbrief .pb{ padding:0.5mm 4mm 4mm 4mm !important }
+    .flightbrief .topbar{ margin-bottom:2px !important }
+    .flightbrief .brandbox{ gap:2px !important }
+        .flightbrief .brandbox img{ max-height:80px !important }
+    .flightbrief .title{ margin-top:0 !important }
+    /* Compact sections to fit Crew & Operator on page 1 */
+    .flightbrief .section{ margin-top:10px !important; page-break-inside: avoid; }
+    .flightbrief .grid th, .flightbrief .grid td{ padding:6px 8px !important }
+    .flightbrief .aircraft-pics img{ height:90px !important }
+    .flightbrief #routeMap{ height:190px !important }
+        #crewTable{ page-break-inside: avoid }
+        /* Observações Gerais sempre na página 2 com margem superior confortável */
+        #notesSection{ break-before: page; page-break-before: always; margin-top:120mm !important }
+}
