@@ -1,0 +1,206 @@
+<!DOCTYPE html><!DOCTYPE html>
+
+<html lang="pt-BR"><html lang="pt-BR">
+
+<head><head>
+
+    <meta charset="UTF-8">    <meta charset="UTF-8">
+
+    <title>Debug Login - Schedule Planning</title>    <title>Debug Login</title>
+
+    <style>    <style>
+
+        body { font-family: 'Inter', system-ui, sans-serif; padding: 20px; background: #f7f7f8; }        body { font-family: monospace; padding: 20px; background: #f5f5f5; }
+
+        .section { background: white; padding: 20px; margin: 15px 0; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }        .section { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; }
+
+        button { padding: 12px 24px; margin: 5px; cursor: pointer; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; transition: all 0.2s; }        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+
+        button:hover { opacity: 0.85; transform: translateY(-1px); }        pre { background: #f0f0f0; padding: 10px; overflow: auto; }
+
+        pre { background: #f0f0f0; padding: 15px; overflow: auto; border-radius: 6px; font-size: 13px; line-height: 1.6; }    </style>
+
+        h1 { color: #2563eb; margin-bottom: 10px; }</head>
+
+        h2 { color: #232336; font-size: 18px; margin-bottom: 12px; }<body>
+
+        .green { background: #16a34a; color: white; }    <h1>🔍 Debug do Sistema de Login</h1>
+
+        .red { background: #dc2626; color: white; }    
+
+        .blue { background: #2563eb; color: white; }    <div class="section">
+
+        .info { background: #e0e7ff; color: #3730a3; padding: 12px; border-radius: 8px; margin: 10px 0; }        <h2>Usuários no localStorage:</h2>
+
+    </style>        <pre id="usersData"></pre>
+
+</head>    </div>
+
+<body>    
+
+    <h1>🔍 Debug do Sistema de Login</h1>    <div class="section">
+
+    <p style="color: #7b7b8a;">Ferramenta para diagnosticar problemas de login</p>        <h2>Usuário Logado:</h2>
+
+            <pre id="loggedData"></pre>
+
+    <div class="info">    </div>
+
+        <strong>💡 Dica:</strong> Se não conseguir fazer login, clique em "Criar/Resetar Super Admin" e tente novamente.    
+
+    </div>    <div class="section">
+
+            <h2>Ações:</h2>
+
+    <div class="section">        <button onclick="createAdmin()">✅ Criar Super Admin</button>
+
+        <h2>📋 Usuários Cadastrados no Sistema:</h2>        <button onclick="clearLogin()">🗑️ Limpar Login</button>
+
+        <pre id="usersData">Carregando...</pre>        <button onclick="clearAll()">⚠️ Limpar Tudo</button>
+
+    </div>        <button onclick="location.reload()">🔄 Atualizar</button>
+
+        </div>
+
+    <div class="section">
+
+        <h2>👤 Usuário Atualmente Logado:</h2>    <script>
+
+        <pre id="loggedData">Carregando...</pre>        function showData() {
+
+    </div>            const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+                const logged = JSON.parse(localStorage.getItem('loggedUser') || 'null');
+
+    <div class="section">            
+
+        <h2>🛠️ Ações Disponíveis:</h2>            document.getElementById('usersData').textContent = JSON.stringify(users, null, 2);
+
+        <button class="green" onclick="createAdmin()">✅ Criar/Resetar Super Admin</button>            document.getElementById('loggedData').textContent = logged ? JSON.stringify(logged, null, 2) : 'Nenhum usuário logado';
+
+        <button class="red" onclick="clearLogin()">🗑️ Limpar Login Atual</button>        }
+
+        <button class="red" onclick="clearAll()">⚠️ Apagar Todos os Dados</button>        
+
+        <button class="blue" onclick="location.reload()">🔄 Atualizar Página</button>        function createAdmin() {
+
+        <br><br>            let users = JSON.parse(localStorage.getItem('users') || '[]');
+
+        <button class="blue" onclick="goToLogin()">🔐 Ir para Página de Login</button>            
+
+        <button class="blue" onclick="goToApp()">🏠 Ir para Aplicação</button>            // Remove admin antigo se existir
+
+    </div>            users = users.filter(u => u.email !== 'guilherme@poitav.com');
+
+            
+
+    <script>            // Adiciona novo admin
+
+        function showData() {            users.push({ 
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');                name: 'Guilherme', 
+
+            const logged = JSON.parse(localStorage.getItem('loggedUser') || 'null');                email: 'guilherme@poitav.com', 
+
+                            password: 'admin123', 
+
+            if (users.length === 0) {                approved: true 
+
+                document.getElementById('usersData').textContent = '⚠️ Nenhum usuário cadastrado no sistema';            });
+
+            } else {            
+
+                document.getElementById('usersData').textContent = JSON.stringify(users, null, 2);            localStorage.setItem('users', JSON.stringify(users));
+
+            }            alert('✅ Super Admin criado!\n\nEmail: guilherme@poitav.com\nSenha: admin123');
+
+                        showData();
+
+            if (!logged) {        }
+
+                document.getElementById('loggedData').textContent = '❌ Nenhum usuário está logado no momento';        
+
+            } else {        function clearLogin() {
+
+                document.getElementById('loggedData').textContent = JSON.stringify(logged, null, 2);            localStorage.removeItem('loggedUser');
+
+            }            alert('✅ Login limpo!');
+
+        }            showData();
+
+                }
+
+        function createAdmin() {        
+
+            let users = JSON.parse(localStorage.getItem('users') || '[]');        function clearAll() {
+
+                        if(confirm('⚠️ Isso vai apagar TODOS os dados do localStorage. Confirma?')) {
+
+            // Remove admin antigo se existir                localStorage.clear();
+
+            users = users.filter(u => u.email !== 'guilherme@poitav.com');                alert('✅ Todos os dados foram apagados!');
+
+                            showData();
+
+            // Adiciona novo admin            }
+
+            users.push({         }
+
+                name: 'Guilherme',         
+
+                email: 'guilherme@poitav.com',         showData();
+
+                password: 'admin123',     </script>
+
+                approved: true </body>
+
+            });</html>
+
+            
+            // Garante que bot também existe
+            if (!users.find(u => u.email === 'bot@poitav.com')) {
+                users.push({ 
+                    name: 'Bot', 
+                    email: 'bot@poitav.com', 
+                    password: 'bot123', 
+                    approved: true 
+                });
+            }
+            
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('✅ Super Admin criado/resetado com sucesso!\n\n📧 Email: guilherme@poitav.com\n🔑 Senha: admin123\n\nAgora você pode fazer login!');
+            showData();
+        }
+        
+        function clearLogin() {
+            localStorage.removeItem('loggedUser');
+            alert('✅ Login limpo com sucesso!\n\nVocê foi deslogado e pode fazer login novamente.');
+            showData();
+        }
+        
+        function clearAll() {
+            if(confirm('⚠️ ATENÇÃO: Esta ação é IRREVERSÍVEL!\n\nIsso vai apagar:\n• Todos os usuários cadastrados\n• Todos os voos salvos\n• Todas as configurações\n• Todos os dados do sistema\n\nTem ABSOLUTA CERTEZA?')) {
+                localStorage.clear();
+                alert('✅ Todos os dados foram apagados!\n\nO sistema foi resetado completamente.');
+                showData();
+            }
+        }
+        
+        function goToLogin() {
+            window.location.href = 'login.html';
+        }
+        
+        function goToApp() {
+            window.location.href = 'index.new.html';
+        }
+        
+        // Mostra dados ao carregar
+        showData();
+        
+        // Atualiza automaticamente a cada 2 segundos
+        setInterval(showData, 2000);
+        
+        console.log('🔍 Debug Login carregado. Monitorando localStorage...');
+    </script>
+</body>
+</html>

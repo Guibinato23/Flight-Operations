@@ -113,28 +113,28 @@
               <form id="new-trip-form" onsubmit="addTrip(event)">
                   <div class="form-group">
                       <label for="trip-code">Código do Voo *</label>
-                      <input type="text" id="pax-trip-code" required placeholder="Ex: 7GVHM6">
+                      <input type="text" id="trip-code" required placeholder="Ex: 7GVHM6">
                   </div>
 
                   <div class="form-row">
                       <div class="form-group">
                           <label for="origin">Origem *</label>
-                          <input type="text" id="pax-origin" required placeholder="Ex: TFFF">
+                          <input type="text" id="origin" required placeholder="Ex: TFFF">
                       </div>
                       <div class="form-group">
                           <label for="destination">Destino *</label>
-                          <input type="text" id="pax-destination" required placeholder="Ex: LGAV">
+                          <input type="text" id="destination" required placeholder="Ex: LGAV">
                       </div>
                   </div>
 
                   <div class="form-group">
                       <label for="trip-date">Data do Voo *</label>
-                      <input type="date" id="pax-trip-date" required>
+                      <input type="date" id="trip-date" required>
                   </div>
 
                   <div class="form-group">
                       <label for="client-name">Nome do Cliente</label>
-                      <input type="text" id="pax-client-name" placeholder="Ex: Nome do Cliente">
+                      <input type="text" id="client-name" placeholder="Ex: Nome do Cliente">
                   </div>
 
                   <div class="form-actions">
@@ -153,32 +153,32 @@
                   <button class="close-modal-btn" onclick="closeEditTripModal()">×</button>
               </div>
               <form id="edit-trip-form" onsubmit="saveEditTrip(event)">
-                  <input type="hidden" id="pax-edit-trip-id">
+                  <input type="hidden" id="edit-trip-id">
                   
                   <div class="form-group">
                       <label for="edit-trip-code">Código do Voo *</label>
-                      <input type="text" id="pax-edit-trip-code" required placeholder="Ex: 7GVHM6">
+                      <input type="text" id="edit-trip-code" required placeholder="Ex: 7GVHM6">
                   </div>
 
                   <div class="form-row">
                       <div class="form-group">
                           <label for="edit-origin">Origem *</label>
-                          <input type="text" id="pax-edit-origin" required placeholder="Ex: TFFF">
+                          <input type="text" id="edit-origin" required placeholder="Ex: TFFF">
                       </div>
                       <div class="form-group">
                           <label for="edit-destination">Destino *</label>
-                          <input type="text" id="pax-edit-destination" required placeholder="Ex: LGAV">
+                          <input type="text" id="edit-destination" required placeholder="Ex: LGAV">
                       </div>
                   </div>
 
                   <div class="form-group">
                       <label for="edit-trip-date">Data do Voo *</label>
-                      <input type="date" id="pax-edit-trip-date" required>
+                      <input type="date" id="edit-trip-date" required>
                   </div>
 
                   <div class="form-group">
                       <label for="edit-client-name">Nome do Cliente</label>
-                      <input type="text" id="pax-edit-client-name" placeholder="Ex: Nome do Cliente">
+                      <input type="text" id="edit-client-name" placeholder="Ex: Nome do Cliente">
                   </div>
 
                   <div class="form-actions">
@@ -297,7 +297,7 @@
               <form id="passenger-form" onsubmit="addPassenger(event)">
                   <div class="form-group">
                       <label for="passenger-name">Nome Completo *</label>
-                      <input type="text" id="pax-passenger-name" required placeholder="Ex: João da Silva" autocomplete="off">
+                      <input type="text" id="passenger-name" required placeholder="Ex: João da Silva" autocomplete="off">
                       <small style="color: #718096; font-size: 12px; margin-top: 4px; display: block;">
                           Digite para buscar passageiros cadastrados
                       </small>
@@ -305,22 +305,22 @@
 
                   <div class="form-group">
                       <label for="passenger-passport">Número do Passaporte *</label>
-                      <input type="text" id="pax-passenger-passport" required placeholder="Ex: BR123456">
+                      <input type="text" id="passenger-passport" required placeholder="Ex: BR123456">
                   </div>
 
                   <div class="form-group">
                       <label for="passport-expiry">Vencimento do Passaporte *</label>
-                      <input type="date" id="pax-passport-expiry" required>
+                      <input type="date" id="passport-expiry" required>
                   </div>
 
                   <div class="form-group">
                       <label for="birth-date">Data de Nascimento *</label>
-                      <input type="date" id="pax-birth-date" required>
+                      <input type="date" id="birth-date" required>
                   </div>
 
                   <div class="form-group">
                       <label for="passenger-gender">Sexo *</label>
-                      <select id="pax-passenger-gender" required>
+                      <select id="passenger-gender" required>
                           <option value="">Selecione...</option>
                           <option value="male">Masculino</option>
                           <option value="female">Feminino</option>
@@ -343,31 +343,31 @@
                   <button class="close-modal-btn" onclick="closeEditPassengerModal()">×</button>
               </div>
               <form id="edit-passenger-form" onsubmit="saveEditPassenger(event)">
-                  <input type="hidden" id="pax-edit-passenger-id">
+                  <input type="hidden" id="edit-passenger-id">
                   
                   <div class="form-group">
                       <label for="edit-passenger-name">Nome Completo *</label>
-                      <input type="text" id="pax-edit-passenger-name" required placeholder="Ex: João da Silva">
+                      <input type="text" id="edit-passenger-name" required placeholder="Ex: João da Silva">
                   </div>
 
                   <div class="form-group">
                       <label for="edit-passenger-passport">Número do Passaporte *</label>
-                      <input type="text" id="pax-edit-passenger-passport" required placeholder="Ex: BR123456">
+                      <input type="text" id="edit-passenger-passport" required placeholder="Ex: BR123456">
                   </div>
 
                   <div class="form-group">
                       <label for="edit-passport-expiry">Vencimento do Passaporte *</label>
-                      <input type="date" id="pax-edit-passport-expiry" required>
+                      <input type="date" id="edit-passport-expiry" required>
                   </div>
 
                   <div class="form-group">
                       <label for="edit-birth-date">Data de Nascimento *</label>
-                      <input type="date" id="pax-edit-birth-date" required>
+                      <input type="date" id="edit-birth-date" required>
                   </div>
 
                   <div class="form-group">
                       <label for="edit-passenger-gender">Sexo *</label>
-                      <select id="pax-edit-passenger-gender" required>
+                      <select id="edit-passenger-gender" required>
                           <option value="">Selecione...</option>
                           <option value="male">Masculino</option>
                           <option value="female">Feminino</option>
@@ -432,7 +432,7 @@
             <input id="dept" type="time" required step="900" />
           </div>
         </div>
-        <div class="row" style="grid-template-columns: repeat(4, 1fr) !important; gap:14px; border:none">
+        <div class="row" style="grid-template-columns: repeat(4, 1fr); gap:14px; border:none">
           <div>
             <label>Origem</label>
             <input id="orig" required placeholder="Ex: GRU" maxlength="4" />
@@ -443,10 +443,10 @@
           </div>
           <div>
             <label>Passageiros</label>
-            <input id="pax" type="text" placeholder="Ex: 3" maxlength="2" inputmode="numeric" pattern="[0-9]*" />
+            <input id="pax" type="number" min="0" value="0" />
           </div>
           <div>
-            <label for="dur">
+            <label for="dur" style="position:relative;display:inline-block;">
               Flight time (min)
               <span id="flightTimeInfoBtn" style="cursor:pointer;display:inline-block;vertical-align:middle;position:relative;" tabindex="0">
                 <svg width="16" height="16" style="vertical-align:middle;opacity:0.7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

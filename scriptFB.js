@@ -108,25 +108,122 @@
 	renderHandForm(); drawHandTable();
 	if($('#addHand')) $('#addHand').addEventListener('click',()=>{ handState.push({airport:'',handling:'',address:'',phone:'',email:''}); saveHand(); renderHandForm(); drawHandTable(); });
 
-	// ===== Weather (Open-Meteo)
-	const weatherCodes={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Drizzle light',53:'Drizzle moderate',55:'Drizzle dense',56:'Freezing drizzle light',57:'Freezing drizzle dense',61:'Rain slight',63:'Rain moderate',65:'Rain heavy',66:'Freezing rain light',67:'Freezing rain heavy',71:'Snow fall slight',73:'Snow fall moderate',75:'Snow fall heavy',77:'Snow grains',80:'Rain showers slight',81:'Rain showers moderate',82:'Rain showers violent',85:'Snow showers slight',86:'Snow showers heavy',95:'Thunderstorm',96:'Thunderstorm w/ slight hail',99:'Thunderstorm w/ heavy hail'};
-	function parseCityFromToName(){ const raw=$('#toName').value.trim(); if(!raw) return $('#toIcao').value.trim(); const parts=raw.split(',').map(s=>s.trim()).filter(Boolean); return parts[parts.length-1]||raw; }
+	// ===== Weather (Open-Meteo - Simples, rápida, confiável, sem autenticação)
+	const weatherCodes = {
+		0:'Clear sky', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast',
+		45:'Fog', 48:'Depositing rime fog',
+		51:'Light drizzle', 53:'Moderate drizzle', 55:'Dense drizzle',
+		61:'Slight rain', 63:'Moderate rain', 65:'Heavy rain',
+		71:'Slight snow fall', 73:'Moderate snow fall', 75:'Heavy snow fall',
+		80:'Slight rain showers', 81:'Moderate rain showers', 82:'Violent rain showers',
+		95:'Thunderstorm', 96:'Thunderstorm with hail'
+	};
+	
+	function parseCityFromToName(){ 
+		const raw=$('#toName').value.trim(); 
+		if(!raw) return $('#toIcao').value.trim(); 
+		const parts=raw.split(',').map(s=>s.trim()).filter(Boolean); 
+		return parts[parts.length-1]||raw; 
+	}
+	
 	function ymd(){ return $('#date').value || ''; }
-	function fmtC(v){ return `${Math.round(v)}°C`; }
+	function fmtC(v){ return Math.round(v) + '°C'; }
 	function setWxStatus(t){ const s=$('#wxStatus'); if(s) s.textContent=t; }
-	async function geocodeCity(name){ const url=`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(name)}`; const r=await fetch(url,{headers:{'Accept':'application/json'}}); if(!r.ok) throw new Error('geocoding'); const j=await r.json(); if(!j.length) throw new Error('not found'); const g=j[0]; return {lat:parseFloat(g.lat), lon:parseFloat(g.lon), label:g.display_name}; }
-	async function updateWeather(){ try{ setWxStatus('Buscando previsão…'); const manualLat=parseFloat($('#wxLat').value); const manualLon=parseFloat($('#wxLon').value); const city=($('#wxCity').value||parseCityFromToName()).trim(); $('#wxCity').value=city; let lat,lon,label=city; if(Number.isFinite(manualLat)&&Number.isFinite(manualLon)){ lat=manualLat; lon=manualLon; label=`${city} (${lat.toFixed(3)}, ${lon.toFixed(3)})`; } else { const g=await geocodeCity(city); lat=g.lat; lon=g.lon; label=g.label; $('#wxLat').value=lat; $('#wxLon').value=lon; }
-			const date=ymd(); if(!date){ setWxStatus('Defina a data do voo.'); return; }
-			const paramsDaily=new URLSearchParams({latitude:lat, longitude:lon, timezone:'auto', start_date:date, end_date:date, daily:'temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,windspeed_10m_max,windgusts_10m_max,weathercode'});
-			const paramsHourly=new URLSearchParams({latitude:lat, longitude:lon, timezone:'auto', start_date:date, end_date:date, hourly:'temperature_2m,precipitation_probability,windspeed_10m,weathercode'});
-			const [dRes,hRes]=await Promise.all([fetch('https://api.open-meteo.com/v1/forecast?'+paramsDaily.toString()), fetch('https://api.open-meteo.com/v1/forecast?'+paramsHourly.toString())]);
-			if(!dRes.ok||!hRes.ok) throw new Error('forecast');
-			const daily=await dRes.json(); const hourly=await hRes.json();
-			const d=daily.daily; const code=d.weathercode?.[0];
-			const summary=[ weatherCodes[code]||`Code ${code}`, `Min/Max: ${fmtC(d.temperature_2m_min[0])} / ${fmtC(d.temperature_2m_max[0])}`, `Wind max: ${Math.round(d.windspeed_10m_max[0])} km/h (gusts ${Math.round(d.windgusts_10m_max[0])} km/h)`, `Precip: ${Math.round(d.precipitation_probability_max[0]||0)}%` + (d.precipitation_sum?` • ${d.precipitation_sum[0]} mm`:'') ].join(' • ');
-			let arrText='—'; const arr=$('#arriveLT').value; if(arr){ const times=hourly.hourly.time; const idx=times.findIndex(t=>t.startsWith(date+'T'+arr)); const pick=idx>=0?idx:times.findIndex(t=>t.startsWith(date+'T'+arr.slice(0,2))); if(pick>=0){ const t=times[pick].slice(11,16); const tt=hourly.hourly.temperature_2m[pick]; const pp=hourly.hourly.precipitation_probability[pick]; const ww=hourly.hourly.windspeed_10m[pick]; const wc=hourly.hourly.weathercode[pick]; arrText=`${t} local • ${weatherCodes[wc]||'—'} • ${fmtC(tt)} • Wind ${Math.round(ww)} km/h • Precip ${pp}%`; } }
-			$('#outWxLoc').textContent=label; $('#outWxDate').textContent=new Date(date+'T00:00:00').toLocaleDateString(); $('#outWxSummary').textContent=summary; $('#outWxArrival').textContent=arrText; setWxStatus('Previsão atualizada.');
-		}catch(e){ console.error(e); setWxStatus('Não foi possível obter a previsão. Preencha cidade/lat/lon e tente novamente.'); }
+	
+	function getWindDir(deg) {
+		const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+		return dirs[Math.round(deg / 22.5) % 16];
+	}
+	
+	async function geocodeCity(name){ 
+		const url='https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(name); 
+		const r=await fetch(url); 
+		if(!r.ok) throw new Error('geocoding'); 
+		const j=await r.json(); 
+		if(!j.length) throw new Error('not found'); 
+		return {lat:parseFloat(j[0].lat), lon:parseFloat(j[0].lon), label:j[0].display_name}; 
+	}
+	
+	async function updateWeather(){ 
+		try{ 
+			setWxStatus('Buscando…'); 
+			const city=($('#wxCity').value||parseCityFromToName()).trim(); 
+			$('#wxCity').value=city;
+			let lat=parseFloat($('#wxLat').value);
+			let lon=parseFloat($('#wxLon').value);
+			let label=city;
+			
+			if(!Number.isFinite(lat) || !Number.isFinite(lon)){
+				if(!city){ setWxStatus('Digite cidade'); return; }
+				const g=await geocodeCity(city);
+				lat=g.lat; lon=g.lon; label=g.label;
+				$('#wxLat').value=lat; $('#wxLon').value=lon;
+			} else {
+				label=city + ' (' + lat.toFixed(2) + ', ' + lon.toFixed(2) + ')';
+			}
+			
+			const date=ymd();
+			if(!date){ setWxStatus('Defina data'); return; }
+			
+			// Open-Meteo - API simples e confiável
+			const url='https://api.open-meteo.com/v1/forecast?latitude=' + lat + 
+				'&longitude=' + lon + 
+				'&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max' +
+				'&hourly=temperature_2m,weathercode,windspeed_10m,winddirection_10m,precipitation' +
+				'&timezone=auto&start_date=' + date + '&end_date=' + date;
+			
+			const res=await fetch(url);
+			if(!res.ok) throw new Error('Erro API');
+			const data=await res.json();
+			
+			if(!data.daily) throw new Error('Sem dados');
+			
+			// Dados do dia
+			const d=data.daily;
+			const minTemp=d.temperature_2m_min[0];
+			const maxTemp=d.temperature_2m_max[0];
+			const precip=d.precipitation_sum[0] || 0;
+			const wind=d.windspeed_10m_max[0];
+			const code=d.weathercode[0];
+			
+			const summary=(weatherCodes[code] || 'N/A') + ' • Min/Max: ' + fmtC(minTemp) + ' / ' + fmtC(maxTemp) + 
+				' • Wind: ' + Math.round(wind) + ' km/h • Precipitation: ' + precip.toFixed(1) + ' mm';
+			
+			// Horário de chegada
+			let arrText='—';
+			const arr=$('#arriveLT').value;
+			if(arr && data.hourly && data.hourly.time){
+				const target=date + 'T' + arr;
+				let idx=0;
+				let minDiff=999999;
+				for(let i=0; i<data.hourly.time.length; i++){
+					const t=data.hourly.time[i];
+					if(!t.startsWith(date)) continue;
+					const h=t.substring(11,13);
+					const diff=Math.abs(parseInt(h) - parseInt(arr.split(':')[0]));
+					if(diff<minDiff){ minDiff=diff; idx=i; }
+				}
+				const h=data.hourly;
+				const time=h.time[idx].substring(11,16);
+				const temp=h.temperature_2m[idx];
+				const wcode=h.weathercode[idx];
+				const wspeed=h.windspeed_10m[idx];
+				const wdir=h.winddirection_10m[idx];
+				const rain=h.precipitation[idx] || 0;
+				
+				arrText=time + ' local • ' + (weatherCodes[wcode] || 'N/A') + ' • ' + fmtC(temp) + 
+					' • Wind ' + Math.round(wspeed) + ' km/h (' + getWindDir(wdir) + ') • Precipitation ' + rain.toFixed(1) + ' mm';
+			}
+			
+			$('#outWxLoc').textContent=label;
+			$('#outWxDate').textContent=new Date(date).toLocaleDateString('pt-BR');
+			$('#outWxSummary').textContent=summary;
+			$('#outWxArrival').textContent=arrText;
+			setWxStatus('✓ OK');
+		}catch(e){
+			console.error(e);
+			setWxStatus('Erro: ' + e.message);
+		}
 	}
 	['#toName','#toIcao','#date','#arriveLT','#wxCity','#wxLat','#wxLon'].forEach(sel=>{ const el=$(sel); if(!el) return; el.addEventListener('change',()=>{ if(sel!=='#wxCity'&&sel!=='#wxLat'&&sel!=='#wxLon'){ const wxc=$('#wxCity'); if(wxc) wxc.value=parseCityFromToName(); } updateWeather(); }); });
 	if($('#wxUpdate')) $('#wxUpdate').addEventListener('click',updateWeather);

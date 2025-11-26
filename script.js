@@ -83,11 +83,26 @@ const tabs = $$('.tab');
 tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
 function switchTab(id){
   tabs.forEach(t => t.classList.toggle('active', t.dataset.tab===id));
-  const cad=$('#cadastro'); const pai=$('#painel'); const fb=$('#flightbrief');
+  const cad=$('#cadastro'); const pai=$('#painel'); const fb=$('#flightbrief'); const pax=$('#pax');
   if(cad) cad.style.display = id==='cadastro' ? '' : 'none';
   if(pai) pai.style.display = id==='painel' ? '' : 'none';
   if(fb)  fb.style.display  = id==='flightbrief' ? '' : 'none';
+  if(pax) pax.style.display = id==='pax' ? '' : 'none';
   if(id==='painel'){ resetFilters(); renderBoard(); applyRowHeight(load('rowHeight','54px')); }
+  if(id==='pax'){ 
+    console.log('[switchTab] Abrindo aba de passageiros');
+    // Inicializar o módulo se ainda não foi inicializado
+    if(typeof window.initPassengersModule === 'function' && !window.passengersModuleInitialized) {
+      window.initPassengersModule().then(() => {
+        window.passengersModuleInitialized = true;
+        if(typeof renderTrips === 'function') {
+          renderTrips();
+        }
+      });
+    } else if(typeof renderTrips === 'function') {
+      renderTrips();
+    }
+  }
 }
 
 
@@ -158,6 +173,17 @@ $('#flightForm').addEventListener('submit', e => {
   $('#boardDate').value = data.date; switchTab('painel');
 });
 $('#gotoBoard').addEventListener('click', ()=> switchTab('painel'));
+
+// Validação do campo Passageiros - aceitar apenas números
+const paxInput = $('#pax');
+if(paxInput) {
+  paxInput.addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+  });
+  paxInput.addEventListener('blur', (e) => {
+    if(e.target.value === '') e.target.value = '';
+  });
+}
 
 // Renderiza lista ao carregar a aba Cadastro
 if(document.getElementById('flightList')) renderFlightList();

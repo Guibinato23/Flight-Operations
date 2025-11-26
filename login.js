@@ -1,10 +1,18 @@
-// Adiciona usuário bot se não existir
+// Adiciona usuários padrão se não existirem
 (() => {
   let users = JSON.parse(localStorage.getItem('users') || '[]');
+  
+  // Adiciona super admin
+  if (!users.find(u => u.email === 'guilherme@poitav.com')) {
+    users.push({ name: 'Guilherme', email: 'guilherme@poitav.com', password: 'admin123', approved: true });
+  }
+  
+  // Adiciona bot
   if (!users.find(u => u.email === 'bot@poitav.com')) {
     users.push({ name: 'Bot', email: 'bot@poitav.com', password: 'bot123', approved: true });
-    localStorage.setItem('users', JSON.stringify(users));
   }
+  
+  localStorage.setItem('users', JSON.stringify(users));
 })();
 // login.js - Simulação de autenticação localStorage
 
@@ -61,20 +69,32 @@ loginForm.onsubmit = function(e) {
   const password = document.getElementById('loginPassword').value;
   const error = document.getElementById('loginError');
   error.style.display = 'none';
+  
   let users = JSON.parse(localStorage.getItem('users') || '[]');
+  console.log('[LOGIN DEBUG] Tentando login com:', email);
+  console.log('[LOGIN DEBUG] Usuários cadastrados:', users);
+  
   const user = users.find(u => u.email === email && u.password === password);
+  
   if (!user) {
+    console.log('[LOGIN DEBUG] Usuário não encontrado ou senha incorreta');
     error.textContent = 'E-mail ou senha inválidos.';
     error.style.display = 'block';
     return;
   }
+  
+  console.log('[LOGIN DEBUG] Usuário encontrado:', user);
+  
   if (user.email !== 'guilherme@poitav.com' && !user.approved) {
+    console.log('[LOGIN DEBUG] Usuário não aprovado');
     error.textContent = 'Cadastro pendente de aprovação pelo administrador.';
     error.style.display = 'block';
     return;
   }
+  
   // Salva usuário logado apenas se aprovado ou for super admin
   if(user.email === 'guilherme@poitav.com' || user.approved) {
+    console.log('[LOGIN DEBUG] Login aprovado, redirecionando...');
     localStorage.setItem('loggedUser', JSON.stringify(user));
     window.location.href = 'index.new.html';
   }
