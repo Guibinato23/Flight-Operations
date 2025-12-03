@@ -1,0 +1,106 @@
+.passengers-container {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.passengers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.passengers-header h1 {
+  font-size: 32px;
+  color: var(--ink);
+  margin: 0;
+}
+
+.passengers-table-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.passengers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.passengers-table thead {
+  background: var(--bg);
+}
+
+.passengers-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--line);
+}
+
+.passengers-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.passengers-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.passengers-table input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  background: #fff;
+  color: var(--ink);
+  transition: border-color 0.2s;
+}
+
+.passengers-table input:focus {
+  outline: none;
+  border-color: var(--brand);
+}
+
+.passengers-table td:last-child {
+  text-align: center;
+  width: 80px;
+}
+
+.passengers-summary {
+  margin-top: 20px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.passengers-summary p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.passengers-summary strong {
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.btn-danger {
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-danger svg {
+  width: 16px;
+  height: 16px;
+}
