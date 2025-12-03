@@ -396,16 +396,18 @@ const FlightRegistration = () => {
         )}
       </div>
 
-      {/* Lista de Voos Futuros */}
+      {/* Flight List */}
       <div className="flights-list-section">
         <h2>
           <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
+            <line x1="8" y1="6" x2="21" y2="6"/>
+            <line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/>
+            <line x1="3" y1="18" x2="3.01" y2="18"/>
           </svg>
-          Voos Futuros ({futureFlights.length})
+          Flight List ({futureFlights.length})
         </h2>
         
         {futureFlights.length === 0 ? (
@@ -413,88 +415,55 @@ const FlightRegistration = () => {
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
             </svg>
-            <p>Nenhum voo futuro cadastrado</p>
+            <p>Nenhum voo cadastrado</p>
           </div>
         ) : (
-          <div className="flights-list">
-            {futureFlights.map((flight) => (
-              <div key={flight.id} className="flight-card">
-                <div className="flight-header">
-                  <div className="flight-route">
-                    <span className="icao">{flight.fromIcao}</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                    <span className="icao">{flight.toIcao}</span>
-                  </div>
-                  <button 
-                    className="btn-delete"
-                    onClick={() => removeFlight(flight.id)}
-                    title="Remover voo"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="3 6 5 6 21 6"></polyline>
-                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    </svg>
-                  </button>
-                </div>
-
-                <div className="flight-details">
-                  <div className="detail-row">
-                    <span className="label">Data:</span>
-                    <span className="value">{formatDate(flight.date)}</span>
-                  </div>
-                  
-                  {flight.departLT && (
-                    <div className="detail-row">
-                      <span className="label">Partida:</span>
-                      <span className="value">{flight.departLT} LT</span>
-                    </div>
-                  )}
-                  
-                  {flight.arriveLT && (
-                    <div className="detail-row">
-                      <span className="label">Chegada:</span>
-                      <span className="value">{flight.arriveLT} LT</span>
-                    </div>
-                  )}
-
-                  <div className="detail-row">
-                    <span className="label">Aeronave:</span>
-                    <span className="value aircraft">{flight.acReg}</span>
-                  </div>
-
-                  {flight.acType && (
-                    <div className="detail-row">
-                      <span className="label">Tipo:</span>
-                      <span className="value">{flight.acType}</span>
-                    </div>
-                  )}
-
-                  {flight.pax && (
-                    <div className="detail-row">
-                      <span className="label">PAX:</span>
-                      <span className="value">{flight.pax}</span>
-                    </div>
-                  )}
-
-                  {flight.flightNo && (
-                    <div className="detail-row">
-                      <span className="label">Voo:</span>
-                      <span className="value">{flight.flightNo}</span>
-                    </div>
-                  )}
-
-                  {flight.notes && (
-                    <div className="detail-row notes">
-                      <span className="label">Obs:</span>
-                      <span className="value">{flight.notes}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
+          <div className="flights-table-container">
+            <table className="flights-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Origem</th>
+                  <th>Destino</th>
+                  <th>Partida</th>
+                  <th>Chegada</th>
+                  <th>Aeronave</th>
+                  <th>Tipo</th>
+                  <th>PAX</th>
+                  <th>Voo Nº</th>
+                  <th>Observações</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {futureFlights.map((flight) => (
+                  <tr key={flight.id}>
+                    <td className="date-cell">{formatDate(flight.date)}</td>
+                    <td className="icao-cell">{flight.fromIcao}</td>
+                    <td className="icao-cell">{flight.toIcao}</td>
+                    <td>{flight.departLT || '-'}</td>
+                    <td>{flight.arriveLT || '-'}</td>
+                    <td className="aircraft-cell">{flight.acReg}</td>
+                    <td>{flight.acType || '-'}</td>
+                    <td className="pax-cell">{flight.pax || '-'}</td>
+                    <td>{flight.flightNo || '-'}</td>
+                    <td className="notes-cell">{flight.notes || '-'}</td>
+                    <td className="actions-cell">
+                      <button 
+                        className="btn-delete-table"
+                        onClick={() => removeFlight(flight.id)}
+                        title="Remover voo"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>

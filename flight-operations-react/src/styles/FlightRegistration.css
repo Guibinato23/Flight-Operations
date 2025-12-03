@@ -1,15 +1,16 @@
 .flight-registration {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.5rem;
   background: var(--bg);
+  padding: 1rem 0;
 }
 
 .flight-registration > div:not(.page-header) {
   max-width: 1600px;
   margin: 0 auto;
   width: 100%;
-  padding: 0 2rem;
+  padding: 0 1rem;
 }
 
 /* Seções */
@@ -17,20 +18,36 @@
 .aircraft-section,
 .flights-list-section {
   background: white;
-  border-radius: 8px;
-  padding: 2rem;
+  border-radius: 12px;
+  padding: 2.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 1.5rem;
 }
 
 .registration-section h2,
 .aircraft-section h2,
 .flights-list-section h2 {
-  margin: 0 0 1.5rem 0;
-  color: var(--brand);
-  font-size: 1.5rem;
+  margin: -2.5rem -2.5rem 1.5rem -2.5rem;
+  padding: 1.25rem 2.5rem;
+  color: #1e40af;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  border-radius: 12px 12px 0 0;
+  border-bottom: 3px solid #1e40af;
+}
+
+.registration-section h2 svg,
+.aircraft-section h2 svg,
+.flights-list-section h2 svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 /* Formulário de Voo - Layout Horizontal */
@@ -39,6 +56,7 @@
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
   align-items: end;
+  margin-top: 0.5rem;
 }
 
 .form-group {
@@ -51,19 +69,21 @@
 }
 
 .form-group label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--ink);
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: #4b5563;
   margin-bottom: 0.375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-  padding: 0.625rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--line);
   border-radius: 4px;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-family: inherit;
   transition: border-color 0.2s;
 }
@@ -103,17 +123,19 @@
 
 .aircraft-table th {
   text-align: left;
-  padding: 0.75rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--ink);
+  padding: 0.625rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #374151;
   border-bottom: 2px solid var(--line);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .aircraft-table td {
-  padding: 0.875rem 1rem;
+  padding: 0.75rem 0.875rem;
   border-bottom: 1px solid var(--line);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
 }
 
 .aircraft-table tbody tr:last-child td {
@@ -169,52 +191,103 @@
   font-size: 1rem;
 }
 
-.flights-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.25rem;
-}
-
-.flight-card {
+/* Flight List Table */
+.flights-table-container {
+  overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 1.25rem;
   background: white;
-  transition: all 0.2s;
 }
 
-.flight-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-color: var(--brand);
+.flights-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
 }
 
-.flight-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
+.flights-table thead {
+  background: linear-gradient(135deg, var(--brand) 0%, #2563eb 100%);
+  color: white;
+}
+
+.flights-table thead th {
+  padding: 0.75rem 0.625rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.flights-table tbody tr {
   border-bottom: 1px solid var(--line);
+  transition: background-color 0.2s ease;
 }
 
-.flight-route {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.flights-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
 }
 
-.flight-route .icao {
-  font-size: 1.25rem;
-  font-weight: 600;
+.flights-table tbody tr:hover {
+  background-color: #eff6ff !important;
+}
+
+.flights-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.flights-table td {
+  padding: 0.625rem 0.625rem;
+  color: var(--ink);
+  vertical-align: middle;
+  font-size: 0.8125rem;
+}
+
+/* Células específicas */
+.date-cell {
+  font-weight: 500;
   color: var(--brand);
+  white-space: nowrap;
+}
+
+.icao-cell {
   font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--brand);
+  letter-spacing: 0.5px;
 }
 
-.flight-route svg {
+.aircraft-cell {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 0.8125rem;
+}
+
+.pax-cell {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+.notes-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--muted);
+  font-size: 0.75rem;
 }
 
-.btn-delete {
+.actions-cell {
+  text-align: center;
+  width: 80px;
+}
+
+.btn-delete-table {
   background: none;
   border: none;
   padding: 0.5rem;
@@ -222,57 +295,38 @@
   color: var(--muted);
   border-radius: 4px;
   transition: all 0.2s;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.btn-delete:hover {
+.btn-delete-table:hover {
   background: #fee;
   color: #c00;
 }
 
-.flight-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.detail-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  font-size: 0.9375rem;
-}
-
-.detail-row .label {
-  color: var(--muted);
-  font-weight: 500;
-  min-width: 80px;
-}
-
-.detail-row .value {
-  color: var(--ink);
-  text-align: right;
-  flex: 1;
-}
-
-.detail-row .value.aircraft {
+/* Botões */
+.btn {
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--brand);
-  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.detail-row.notes {
-  flex-direction: column;
-  gap: 0.25rem;
+.btn.primary {
+  background: var(--brand);
+  color: white;
 }
 
-.detail-row.notes .value {
-  text-align: left;
-  font-size: 0.875rem;
-  color: var(--muted);
-  line-height: 1.4;
+.btn.primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
 }
 
 /* Responsivo */
@@ -285,20 +339,38 @@
     grid-template-columns: 1fr;
   }
 
-  .flights-list {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  .flights-table {
+    font-size: 0.875rem;
+  }
+
+  .flights-table thead th {
+    padding: 0.625rem 0.5rem;
+    font-size: 0.625rem;
+  }
+
+  .flights-table td {
+    padding: 0.75rem 0.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .flight-registration {
-    padding: 1rem;
+    padding: 0.5rem 0;
   }
 
   .registration-section,
   .aircraft-section,
   .flights-list-section {
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
+    margin: 0 0.75rem;
+  }
+
+  .registration-section h2,
+  .aircraft-section h2,
+  .flights-list-section h2 {
+    margin: -2rem -1.5rem 1.25rem -1.5rem;
+    padding: 1rem 1.5rem;
+    font-size: 0.9375rem;
   }
 
   .flight-form .form-row {
@@ -309,7 +381,20 @@
     grid-column: span 1;
   }
 
-  .flights-list {
-    grid-template-columns: 1fr;
+  .flights-table {
+    font-size: 0.75rem;
+  }
+
+  .flights-table thead th,
+  .flights-table td {
+    padding: 0.5rem 0.375rem;
+  }
+
+  .flights-table thead th {
+    font-size: 0.5625rem;
+  }
+
+  .notes-cell {
+    max-width: 120px;
   }
 }

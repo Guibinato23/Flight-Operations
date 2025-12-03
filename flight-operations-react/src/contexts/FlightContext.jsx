@@ -140,7 +140,7 @@ export const FlightProvider = ({ children }) => {
   };
 
   const addPassenger = () => {
-    setPassengers(prev => [...prev, { name: '', passport: '', exp: '', phone: '' }]);
+    setPassengers(prev => [{ name: '', dob: '', passport: '', exp: '' }, ...prev]);
   };
 
   const updatePassenger = (index, field, value) => {

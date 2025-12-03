@@ -1,31 +1,223 @@
 .passengers-container {
-  background: var(--bg);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: calc(100vh - 80px);
+  padding: 2rem 0 3rem 0;
 }
 
 .passengers-container > div:not(.page-header) {
-  padding: 0 40px 40px 40px;
+  padding: 0 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
-.passengers-header {
+/* Seção Adicionar Passageiro */
+.passengers-add-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1.5px solid #e5e7eb;
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
 }
 
-.passengers-header h1 {
-  font-size: 32px;
-  color: var(--ink);
+.passengers-add-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+  border-radius: 12px 12px 0 0;
+}
+
+.passengers-add-section h2 {
   margin: 0;
+  color: #1e40af;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.passengers-table-container {
-  background: #fff;
+.passengers-add-section h2 svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.passengers-add-section .btn.primary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+.passengers-add-section .btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.passengers-add-section .btn.primary svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Seção Lista de Passageiros */
+.passengers-list-section {
+  background: white;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1.5px solid #e5e7eb;
+  position: relative;
+}
+
+.passengers-list-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand) 0%, #60a5fa 100%);
+  border-radius: 12px 12px 0 0;
+}
+
+.passengers-list-section h2 {
+  margin: 0 0 1.5rem 0;
+  color: #1e40af;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-bottom: 0.875rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.passengers-list-section h2 svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+/* Empty State */
+.empty-state-passengers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 2rem;
+  color: #64748b;
+  text-align: center;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-radius: 10px;
+  border: 2px dashed #cbd5e1;
+  margin-top: 0.5rem;
+}
+
+.empty-state-passengers svg {
+  margin-bottom: 1.25rem;
+  opacity: 0.4;
+  color: var(--brand);
+}
+
+.empty-state-passengers p {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.empty-state-passengers span {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* Campo de Pesquisa */
+.passengers-search {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1.5px solid #e5e7eb;
+  position: relative;
+}
+
+.passengers-search svg {
+  flex-shrink: 0;
+  color: #64748b;
+}
+
+.passengers-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 0.875rem;
+  color: var(--ink);
+  outline: none;
+}
+
+.passengers-search input::placeholder {
+  color: #9ca3af;
+}
+
+.passengers-search .clear-search {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.passengers-search .clear-search:hover {
+  background: #e5e7eb;
+  color: #1e293b;
+}
+
+/* Tabela de Passageiros */
+.passengers-table-container {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  border: 1.5px solid #e5e7eb;
+  margin-top: 0.5rem;
 }
 
 .passengers-table {
@@ -34,77 +226,187 @@
 }
 
 .passengers-table thead {
-  background: var(--bg);
+  background: linear-gradient(135deg, var(--brand) 0%, #2563eb 100%);
 }
 
 .passengers-table th {
-  padding: 16px;
+  padding: 0.875rem 1rem;
   text-align: left;
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.6875rem;
+  color: white;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 2px solid var(--line);
+  letter-spacing: 0.8px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .passengers-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--line);
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.8125rem;
+}
+
+.passengers-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.passengers-table tbody tr:nth-child(even) {
+  background: #fafbff;
 }
 
 .passengers-table tbody tr:hover {
-  background: #fafafa;
+  background: #eff6ff !important;
+  transform: scale(1.002);
 }
 
 .passengers-table input {
   width: 100%;
-  border: 1px solid var(--line);
+  border: 1.5px solid #e5e7eb;
   border-radius: 6px;
-  padding: 8px 10px;
-  font-size: 13px;
-  background: #fff;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  background: white;
   color: var(--ink);
-  transition: border-color 0.2s;
+  transition: all 0.2s ease;
+}
+
+.passengers-table input:hover {
+  border-color: #cbd5e1;
+  background: #fafbfc;
 }
 
 .passengers-table input:focus {
   outline: none;
   border-color: var(--brand);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .passengers-table td:last-child {
   text-align: center;
-  width: 80px;
+  width: 100px;
 }
 
+/* Summary */
 .passengers-summary {
-  margin-top: 20px;
-  padding: 16px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 1.75rem;
+  padding: 1.25rem 1.5rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1.5px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.passengers-summary svg {
+  flex-shrink: 0;
+  color: #10b981;
 }
 
 .passengers-summary p {
   margin: 0;
-  font-size: 14px;
-  color: var(--muted);
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
 }
 
 .passengers-summary strong {
-  color: var(--ink);
-  font-size: 16px;
+  color: #1e293b;
+  font-size: 1.125rem;
+  font-weight: 700;
 }
 
+/* Botões */
 .btn-danger {
-  padding: 8px;
+  padding: 0.5rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+  transform: scale(1.1);
 }
 
 .btn-danger svg {
   width: 16px;
   height: 16px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .passengers-container {
+    padding: 1rem 0;
+  }
+
+  .passengers-container > div:not(.page-header) {
+    padding: 0 1rem;
+    gap: 1.25rem;
+  }
+
+  .passengers-add-section {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+    padding: 1.5rem;
+  }
+
+  .passengers-add-section h2 {
+    font-size: 0.8125rem;
+  }
+
+  .passengers-list-section {
+    padding: 1.5rem;
+  }
+
+  .passengers-list-section h2 {
+    font-size: 0.8125rem;
+  }
+
+  .passengers-table-container {
+    border-radius: 8px;
+  }
+
+  .passengers-table th,
+  .passengers-table td {
+    padding: 0.625rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .passengers-table th {
+    font-size: 0.625rem;
+  }
+
+  .passengers-summary {
+    padding: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .passengers-summary p {
+    font-size: 0.8125rem;
+  }
+
+  .passengers-summary strong {
+    font-size: 1rem;
+  }
+
+  .empty-state-passengers {
+    padding: 2.5rem 1rem;
+  }
+
+  .empty-state-passengers svg {
+    width: 48px;
+    height: 48px;
+  }
 }

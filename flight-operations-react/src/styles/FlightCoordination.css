@@ -2,8 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  height: calc(100vh - 80px);
-  overflow: hidden;
+  min-height: calc(100vh - 80px);
   background: var(--bg);
 }
 
@@ -33,6 +32,134 @@
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Date Filter */
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+.date-filter label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.date-filter label svg {
+  color: var(--brand);
+  flex-shrink: 0;
+}
+
+.date-input {
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.date-input:hover {
+  border-color: var(--brand);
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.btn-clear-filter {
+  padding: 0.25rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.btn-clear-filter:hover {
+  color: #e53935;
+  background: rgba(229, 57, 53, 0.1);
+}
+
+.btn-clear-filter svg {
+  display: block;
+}
+
+/* Zoom Controls */
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg);
+  padding: 0.25rem;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+.btn-zoom {
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+}
+
+.btn-zoom:hover:not(:disabled) {
+  background: var(--bg);
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.btn-zoom:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-zoom svg {
+  display: block;
+}
+
+.btn-zoom-reset {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line);
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brand);
+  transition: all 0.2s;
+  min-width: 50px;
+}
+
+.btn-zoom-reset:hover {
+  background: var(--brand);
+  color: white;
+  border-color: var(--brand);
 }
 
 .view-mode-toggle {
@@ -93,8 +220,6 @@
 
 /* Grid Container */
 .coordination-grid-container {
-  flex: 1;
-  overflow-y: auto;
   overflow-x: hidden;
   background: white;
   border-radius: 8px;
@@ -162,6 +287,22 @@
   margin-top: 0.25rem;
 }
 
+/* Time Scale */
+.time-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding: 0 0.25rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.5rem;
+}
+
+.time-mark {
+  font-size: 0.625rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
 /* Grid Body */
 .grid-body {
   display: flex;
@@ -220,12 +361,12 @@
 .date-slot {
   flex: 1;
   min-width: 100px;
-  min-height: 80px;
-  padding: 0.5rem;
+  min-height: 60px;
+  padding: 0.5rem 0;
   border-right: 1px solid var(--line);
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
 }
 
 .date-slot.today {
@@ -234,21 +375,59 @@
   border-right: 2px solid var(--brand);
 }
 
-/* Flight Cards Mini */
-.flight-card-mini {
+/* Flights Container */
+.flights-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Time Grid Lines */
+.time-grid-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.time-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+  opacity: 0.3;
+}
+
+/* Flight Cards Timeline */
+.flight-card-timeline {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   background: linear-gradient(135deg, var(--brand) 0%, #1976d2 100%);
   color: white;
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 6px;
   font-size: 0.75rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   cursor: pointer;
+  z-index: 2;
+  min-width: 80px;
+  overflow: visible;
+  height: fit-content;
+  white-space: nowrap;
 }
 
-.flight-card-mini:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.flight-card-timeline:hover {
+  transform: translateY(-50%) translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  z-index: 100;
+  filter: brightness(1.1);
 }
 
 .flight-route-mini {
@@ -257,6 +436,9 @@
   gap: 0.25rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .icao-mini {
@@ -266,12 +448,16 @@
 
 .flight-route-mini svg {
   opacity: 0.8;
+  flex-shrink: 0;
 }
 
-.flight-time-mini {
+.flight-times-mini {
   font-size: 0.6875rem;
   opacity: 0.9;
   font-weight: 500;
+  display: flex;
+  gap: 0.25rem;
+  white-space: nowrap;
 }
 
 .flight-pax-mini {
@@ -375,4 +561,142 @@
   .coordination-stats {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* Edit Flight Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--line);
+}
+
+.modal-content h3 {
+  margin: 0 0 1rem 0;
+  color: var(--brand);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.flight-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--hover);
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.flight-info-header strong {
+  color: var(--brand);
+  font-size: 1rem;
+}
+
+.flight-info-header span {
+  color: var(--text-muted);
+  font-family: 'Courier New', monospace;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+.modal-actions button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.btn-cancel {
+  background: var(--hover);
+  color: var(--text);
+}
+
+.btn-cancel:hover {
+  background: var(--line);
+}
+
+.btn-save {
+  background: var(--brand);
+  color: white;
+}
+
+.btn-save:hover {
+  background: #2563eb;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.flight-card-timeline:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }

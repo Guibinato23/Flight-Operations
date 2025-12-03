@@ -163,18 +163,18 @@ const FlightBriefPreview = () => {
               <thead>
                 <tr>
                   <th style={{ width: '240px' }}>Name</th>
+                  <th style={{ width: '140px' }}>DOB</th>
                   <th style={{ width: '180px' }}>Passport</th>
                   <th style={{ width: '140px' }}>Expiration</th>
-                  <th>Phone</th>
                 </tr>
               </thead>
               <tbody>
                 {passengers.map((pax, index) => (
                   <tr key={index}>
                     <td>{pax.name}</td>
+                    <td>{pax.dob}</td>
                     <td>{pax.passport}</td>
                     <td>{pax.exp}</td>
-                    <td>{pax.phone}</td>
                   </tr>
                 ))}
               </tbody>

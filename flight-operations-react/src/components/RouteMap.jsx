@@ -4,13 +4,36 @@ import L from 'leaflet';
 import { useFlightContext } from '../contexts/FlightContext';
 import 'leaflet/dist/leaflet.css';
 
-// Fix para ícones do Leaflet no React
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
+// Ícones customizados A e B
+const createCustomIcon = (label, color) => {
+  return L.divIcon({
+    className: 'custom-marker',
+    html: `
+      <div style="
+        background: ${color};
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        font-weight: bold;
+        font-size: 16px;
+      ">
+        <span style="transform: rotate(45deg);">${label}</span>
+      </div>
+    `,
+    iconSize: [36, 36],
+    iconAnchor: [18, 36],
+  });
+};
+
+const iconA = createCustomIcon('A', '#e24b4b');
+const iconB = createCustomIcon('B', '#3b82f6');
 
 const FitBounds = ({ positions }) => {
   const map = useMap();
@@ -100,15 +123,15 @@ const RouteMap = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               maxZoom={17}
             />
-            <Marker position={[route.from.lat, route.from.lon]} title={route.from.icao} />
-            <Marker position={[route.to.lat, route.to.lon]} title={route.to.icao} />
-            <Polyline
-              positions={[
-                [route.from.lat, route.from.lon],
-                [route.to.lat, route.to.lon]
-              ]}
-              weight={3}
-              color="#3388ff"
+            <Marker 
+              position={[route.from.lat, route.from.lon]} 
+              icon={iconA}
+              title={`${route.from.icao} (Origin)`}
+            />
+            <Marker 
+              position={[route.to.lat, route.to.lon]} 
+              icon={iconB}
+              title={`${route.to.icao} (Destination)`}
             />
             <FitBounds positions={[
               [route.from.lat, route.from.lon],
@@ -130,9 +153,56 @@ const RouteMap = () => {
           </div>
         )}
       </div>
-      <div className="route-hint" style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '4px' }}>
-        {hint}
-      </div>
+      {route ? (
+        <div style={{ 
+          fontSize: '11px', 
+          color: 'var(--ink)', 
+          marginTop: '6px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          padding: '6px 10px',
+          background: '#f9fafb',
+          borderRadius: '4px',
+          border: '1px solid var(--line)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ 
+              background: '#e24b4b', 
+              color: 'white', 
+              width: '20px', 
+              height: '20px', 
+              borderRadius: '50%',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 'bold',
+              fontSize: '11px'
+            }}>A</span>
+            <span style={{ fontWeight: '600' }}>{flightData.fromIcao}</span>
+          </div>
+          <span style={{ color: '#3b82f6', fontWeight: 'bold' }}>→</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ 
+              background: '#3b82f6', 
+              color: 'white', 
+              width: '20px', 
+              height: '20px', 
+              borderRadius: '50%',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 'bold',
+              fontSize: '11px'
+            }}>B</span>
+            <span style={{ fontWeight: '600' }}>{flightData.toIcao}</span>
+          </div>
+        </div>
+      ) : (
+        <div className="route-hint" style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '4px' }}>
+          {hint}
+        </div>
+      )}
     </div>
   );
 };
