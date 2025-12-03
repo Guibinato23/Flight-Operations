@@ -21,7 +21,7 @@ const Passengers = () => {
     <div className="passengers-container">
       {/* Header com Logo */}
       <div className="page-header">
-        <img src="/Logo.png" alt="Logo" className="page-logo" />
+        <img src="/Logo.png?v=2" alt="Logo" className="page-logo" />
         <div className="page-header-divider"></div>
       </div>
 
