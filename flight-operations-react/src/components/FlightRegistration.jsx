@@ -112,6 +112,12 @@ const FlightRegistration = () => {
 
   return (
     <div className="flight-registration">
+      {/* Header com Logo */}
+      <div className="page-header">
+        <img src="/Logo.png" alt="Logo" className="page-logo" />
+        <div className="page-header-divider"></div>
+      </div>
+
       {/* Cadastro de Voo */}
       <div className="registration-section">
         <h2>

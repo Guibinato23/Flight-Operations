@@ -1,5 +1,9 @@
 .passengers-container {
-  padding: 40px;
+  background: var(--bg);
+}
+
+.passengers-container > div:not(.page-header) {
+  padding: 0 40px 40px 40px;
   max-width: 1400px;
   margin: 0 auto;
 }

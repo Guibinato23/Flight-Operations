@@ -11,6 +11,12 @@ const Passengers = () => {
 
   return (
     <div className="passengers-container">
+      {/* Header com Logo */}
+      <div className="page-header">
+        <img src="/Logo.png" alt="Logo" className="page-logo" />
+        <div className="page-header-divider"></div>
+      </div>
+
       <div className="passengers-header">
         <h1>Gerenciamento de Passageiros</h1>
         <button className="btn primary" onClick={addPassenger}>

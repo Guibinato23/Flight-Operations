@@ -1,10 +1,15 @@
 .flight-registration {
-  padding: 2rem;
-  max-width: 1600px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  background: var(--bg);
+}
+
+.flight-registration > div:not(.page-header) {
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 2rem;
 }
 
 /* Seções */

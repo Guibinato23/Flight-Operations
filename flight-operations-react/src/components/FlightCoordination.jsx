@@ -85,6 +85,12 @@ const FlightCoordination = () => {
 
   return (
     <div className="flight-coordination">
+      {/* Header com Logo */}
+      <div className="page-header">
+        <img src="/Logo.png" alt="Logo" className="page-logo" />
+        <div className="page-header-divider"></div>
+      </div>
+
       <div className="coordination-header">
         <h1>
           <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
