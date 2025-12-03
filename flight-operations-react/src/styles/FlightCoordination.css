@@ -1,0 +1,380 @@
+.flight-coordination {
+  padding: 2rem;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+/* Header */
+.coordination-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.coordination-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--brand);
+  font-size: 1.75rem;
+}
+
+.coordination-controls {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.view-mode-toggle {
+  display: flex;
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 0.25rem;
+}
+
+.view-mode-toggle button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  color: var(--muted);
+}
+
+.view-mode-toggle button.active {
+  background: white;
+  color: var(--brand);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.date-navigation {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn-nav,
+.btn-today {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--line);
+  background: white;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-nav {
+  padding: 0.5rem;
+}
+
+.btn-nav:hover,
+.btn-today:hover {
+  background: var(--bg);
+  border-color: var(--brand);
+}
+
+/* Grid Container */
+.coordination-grid-container {
+  flex: 1;
+  overflow: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.coordination-grid {
+  min-width: max-content;
+}
+
+/* Grid Header */
+.grid-header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+  border-bottom: 2px solid var(--line);
+}
+
+.aircraft-column-header {
+  width: 180px;
+  min-width: 180px;
+  padding: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--bg);
+  border-right: 2px solid var(--line);
+  position: sticky;
+  left: 0;
+  z-index: 11;
+}
+
+.dates-header {
+  display: flex;
+  flex: 1;
+}
+
+.date-cell {
+  min-width: 120px;
+  width: 120px;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border-right: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.date-cell.today {
+  background: #e3f2fd;
+  border-left: 2px solid var(--brand);
+  border-right: 2px solid var(--brand);
+}
+
+.date-day {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.date-date {
+  font-size: 0.875rem;
+  color: var(--ink);
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+/* Grid Body */
+.grid-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.aircraft-row {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.2s;
+}
+
+.aircraft-row:hover {
+  background: var(--bg);
+}
+
+.aircraft-cell {
+  width: 180px;
+  min-width: 180px;
+  padding: 1rem;
+  border-right: 2px solid var(--line);
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 5;
+}
+
+.aircraft-row:hover .aircraft-cell {
+  background: var(--bg);
+}
+
+.aircraft-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.aircraft-reg {
+  font-weight: 600;
+  color: var(--brand);
+  font-size: 1rem;
+  font-family: 'Courier New', monospace;
+}
+
+.aircraft-type {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+/* Date Slots */
+.dates-row {
+  display: flex;
+  flex: 1;
+}
+
+.date-slot {
+  min-width: 120px;
+  width: 120px;
+  min-height: 80px;
+  padding: 0.5rem;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.date-slot.today {
+  background: #f5f9ff;
+  border-left: 2px solid var(--brand);
+  border-right: 2px solid var(--brand);
+}
+
+/* Flight Cards Mini */
+.flight-card-mini {
+  background: linear-gradient(135deg, var(--brand) 0%, #1976d2 100%);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.flight-card-mini:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.flight-route-mini {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.icao-mini {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8125rem;
+}
+
+.flight-route-mini svg {
+  opacity: 0.8;
+}
+
+.flight-time-mini {
+  font-size: 0.6875rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.flight-pax-mini {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.6875rem;
+  opacity: 0.9;
+  margin-top: 0.25rem;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--muted);
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state svg {
+  margin-bottom: 1.5rem;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.empty-state small {
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+/* Stats */
+.coordination-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--brand);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Responsivo */
+@media (max-width: 1024px) {
+  .flight-coordination {
+    padding: 1rem;
+  }
+
+  .coordination-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .aircraft-column-header,
+  .aircraft-cell {
+    width: 140px;
+    min-width: 140px;
+  }
+
+  .date-cell,
+  .date-slot {
+    min-width: 100px;
+    width: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .coordination-controls {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .view-mode-toggle,
+  .date-navigation {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .coordination-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
