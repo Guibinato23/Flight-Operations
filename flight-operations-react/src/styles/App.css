@@ -138,14 +138,13 @@ body {
 .page-header {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 2rem 2rem 1rem 2rem;
+  padding: 1.5rem 2rem 1rem 2rem;
   background: white;
   margin-bottom: 1.5rem;
 }
 
 .page-logo {
-  height: 60px;
+  height: 50px;
   width: auto;
   object-fit: contain;
   margin-bottom: 1rem;
@@ -154,5 +153,5 @@ body {
 .page-header-divider {
   width: 100%;
   height: 2px;
-  background: linear-gradient(to right, transparent, var(--line), transparent);
+  background: linear-gradient(to right, var(--line), transparent);
 }
