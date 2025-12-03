@@ -81,10 +81,20 @@ export const FlightProvider = ({ children }) => {
   // Logo
   const [logo, setLogo] = useState('Logo.png');
 
+  // Estado dos voos cadastrados
+  const [flights, setFlights] = useState(() => {
+    const saved = localStorage.getItem('registeredFlights');
+    return saved ? JSON.parse(saved) : [];
+  });
+
   // Persiste dados no localStorage
   useEffect(() => {
     localStorage.setItem('flightData', JSON.stringify(flightData));
   }, [flightData]);
+
+  useEffect(() => {
+    localStorage.setItem('registeredFlights', JSON.stringify(flights));
+  }, [flights]);
 
   useEffect(() => {
     localStorage.setItem('crewState', JSON.stringify(crew));
@@ -151,6 +161,25 @@ export const FlightProvider = ({ children }) => {
     setHandling(prev => prev.filter((_, i) => i !== index));
   };
 
+  const addFlight = (flight) => {
+    const newFlight = {
+      ...flight,
+      id: Date.now(),
+      createdAt: new Date().toISOString()
+    };
+    setFlights(prev => [...prev, newFlight]);
+  };
+
+  const updateFlight = (id, updatedFlight) => {
+    setFlights(prev => prev.map(f => f.id === id ? { ...f, ...updatedFlight } : f));
+  };
+
+  const removeFlight = (id) => {
+    if (confirm('Deseja remover este voo?')) {
+      setFlights(prev => prev.filter(f => f.id !== id));
+    }
+  };
+
   const resetAllData = () => {
     if (confirm('Limpar tudo e recarregar valores padrão?')) {
       localStorage.clear();
@@ -175,6 +204,10 @@ export const FlightProvider = ({ children }) => {
     removeHandling,
     weather,
     setWeather,
+    flights,
+    addFlight,
+    updateFlight,
+    removeFlight,
     aircraftPhotos,
     setAircraftPhotos,
     logo,

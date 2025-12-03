@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FlightProvider } from './contexts/FlightContext';
 import FlightBrief from './components/FlightBrief';
 import Passengers from './components/Passengers';
+import FlightRegistration from './components/FlightRegistration';
 import './styles/App.css';
 
 function App() {
@@ -14,11 +15,10 @@ function App() {
           <div 
             className={`sidebar-icon ${activeTab === 'cadastro' ? 'active' : ''}`}
             onClick={() => setActiveTab('cadastro')}
-            title="Cadastro"
+            title="Cadastro de Voos"
           >
             <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
-              <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" strokeWidth="2"/>
-              <path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
             </svg>
           </div>
           <div 
@@ -44,14 +44,9 @@ function App() {
         </div>
 
         <div className="main-content">
+          {activeTab === 'cadastro' && <FlightRegistration />}
           {activeTab === 'flightbrief' && <FlightBrief />}
           {activeTab === 'passengers' && <Passengers />}
-          {activeTab === 'cadastro' && (
-            <div className="tab-content">
-              <h1>Cadastro</h1>
-              <p>Em desenvolvimento...</p>
-            </div>
-          )}
         </div>
       </div>
     </FlightProvider>
