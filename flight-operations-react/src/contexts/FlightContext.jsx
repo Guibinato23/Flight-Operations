@@ -87,6 +87,12 @@ export const FlightProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // Estado das aeronaves cadastradas
+  const [aircraft, setAircraft] = useState(() => {
+    const saved = localStorage.getItem('registeredAircraft');
+    return saved ? JSON.parse(saved) : [];
+  });
+
   // Persiste dados no localStorage
   useEffect(() => {
     localStorage.setItem('flightData', JSON.stringify(flightData));
@@ -95,6 +101,10 @@ export const FlightProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('registeredFlights', JSON.stringify(flights));
   }, [flights]);
+
+  useEffect(() => {
+    localStorage.setItem('registeredAircraft', JSON.stringify(aircraft));
+  }, [aircraft]);
 
   useEffect(() => {
     localStorage.setItem('crewState', JSON.stringify(crew));
@@ -161,6 +171,24 @@ export const FlightProvider = ({ children }) => {
     setHandling(prev => prev.filter((_, i) => i !== index));
   };
 
+  const addAircraft = (newAircraft) => {
+    const aircraftData = {
+      ...newAircraft,
+      id: Date.now()
+    };
+    setAircraft(prev => [...prev, aircraftData]);
+  };
+
+  const updateAircraft = (id, updatedData) => {
+    setAircraft(prev => prev.map(ac => ac.id === id ? { ...ac, ...updatedData } : ac));
+  };
+
+  const removeAircraft = (id) => {
+    if (confirm('Deseja remover esta aeronave?')) {
+      setAircraft(prev => prev.filter(ac => ac.id !== id));
+    }
+  };
+
   const addFlight = (flight) => {
     const newFlight = {
       ...flight,
@@ -208,6 +236,10 @@ export const FlightProvider = ({ children }) => {
     addFlight,
     updateFlight,
     removeFlight,
+    aircraft,
+    addAircraft,
+    updateAircraft,
+    removeAircraft,
     aircraftPhotos,
     setAircraftPhotos,
     logo,
